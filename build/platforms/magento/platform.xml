@@ -1,0 +1,35 @@
+<project>
+    <!-- TASK: create new Magento platform -->
+    <target name="create-platform">
+        <!-- Execute Magento composer -->
+        <copy file="${build.platforms}/magento/composer.json" tofile="${project.basedir}/composer.json" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <exec passthru="true" command="composer install" />
+
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+
+        <!-- Create Database -->
+        <phingcall target="create-db" />
+
+        <!-- Move site gitignore -->
+        <copy file="${build.platforms}/${platform}/gitignore" tofile="${build.site}/.gitignore" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: deploy existing Magento platformm -->
+    <target name="deploy-platform">
+        <!-- Execute Magento composer -->
+        <exec command="composer update" />
+    </target>
+
+</project>

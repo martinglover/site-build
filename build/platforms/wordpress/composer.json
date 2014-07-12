@@ -1,0 +1,68 @@
+{
+    "name": "Wordpress Setup"
+    ,"description": "Wordpress site setup"
+    ,"authors": [
+        {
+            "name": "Martin Glover"
+            ,"email": "martin@zucchi.co.uk"
+        }
+    ]
+    ,"repositories": [
+        {
+            "type":"composer",
+            "url":"http://wpackagist.org"
+        }
+        ,{
+            "type": "package"
+            ,"package": {
+                "name": "wordpress/core"
+                ,"type": "webroot"
+                ,"version": "${platform.wordpress.version}"
+                ,"dist": {
+                    "type": "zip"
+                    ,"url": "https://github.com/WordPress/WordPress/archive/${platform.wordpress.version}.zip"
+                }
+                ,"require" : {
+                    "fancyguy/webroot-installer": "1.0.0"
+                }
+            }
+        }
+        ,{
+            "type": "package"
+            ,"package": {
+                "name": "rilwis/meta-box"
+                ,"type": "wordpress-plugin"
+                ,"version": "master"
+                ,"source": {
+                    "type": "git"
+                    ,"url": "https://github.com/rilwis/meta-box.git"
+                    ,"reference": "master"
+                }
+            }
+        }
+    ]
+    ,"require": {
+        "php": ">=5.3.0"
+        ,"wordpress/core": "${platform.wordpress.version}"
+        ,"composer/installers": "~1.0"
+        ,"fancyguy/webroot-installer": "1.0.0"
+        ,"rilwis/meta-box": "master"
+        ,"wpackagist-plugin/duplicate-post": "*"
+        ,"wpackagist-plugin/contact-form-7": "*"
+        ,"wpackagist-plugin/contact-form-7-to-database-extension": "*"
+        ,"wpackagist-plugin/really-simple-captcha": "*"
+        ,"wpackagist-plugin/tinymce-advanced": "*"
+        ,"wpackagist-plugin/oauth-twitter-feed-for-developers": "*"
+        ,"wpackagist-plugin/wp-realtime-sitemap": "*"
+        ,"wpackagist-plugin/wp-retina-2x": "*"
+    }
+    ,"extra": {
+        "webroot-dir": "site"
+        ,"webroot-package": "wordpress/core"
+        ,"installer-paths": {
+            "site/wp-content/plugins/{$name}": ["type:wordpress-plugin"]
+            ,"site/wp-content/themes/{$name}": ["type:wordpress-theme"]
+        }
+    }
+    ,"minimum-stability": "dev"
+}

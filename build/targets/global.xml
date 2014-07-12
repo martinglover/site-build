@@ -1,0 +1,77 @@
+<project>
+    <!-- TASK: Create server engine conf -->
+    <target name="create-engine">
+        <if>
+            <available file="${build.templates}/${environment}.${webserver}.conf"/>
+            <then>
+                <copy file="${build.templates}/${environment}.${webserver}.conf" tofile="${build.conf}/${environment}.conf" overwrite="true">
+                    <filterchain>
+                        <expandproperties />
+                    </filterchain>
+                </copy>
+            </then>
+            <else>
+                <copy file="${build.templates}/${webserver}.conf" tofile="${build.conf}/${environment}.conf" overwrite="true">
+                    <filterchain>
+                        <expandproperties />
+                    </filterchain>
+                </copy>
+            </else>
+        </if>
+    </target>
+
+    <!-- TASK: Create new database -->
+    <target name="create-db">
+        <pdosqlexec url="mysql:host=${deploy.db.host}" userid="${deploy.db.username}" password="${deploy.db.password}">
+            CREATE DATABASE IF NOT EXISTS `${deploy.db.name}`;
+        </pdosqlexec>
+    </target>
+
+    <!-- TASK: Attach site to webserver enabled sites -->
+    <target name="site-attach">
+        <if>
+            <available file="${build.conf}/${environment}.conf" />
+            <then>
+                <if>
+                    <equals arg1="${webserver}" arg2="apache" />
+                    <then>
+                        <exec command="sudo ln -s ${build.conf}/${environment}.conf ${webserver.apache.path}/sites-available/${deploy.site.name}.conf" />
+                        <exec command="sudo ln -s ${webserver.apache.path}/sites-available/${deploy.site.name}.conf ${webserver.apache.path}/sites-enabled/${deploy.site.name}.conf" />
+                        <exec command="sudo service apache2 restart" />
+                    </then>
+                    <elseif>
+                        <equals arg1="${webserver}" arg2="nginx" />
+                        <then>
+                            <exec command="sudo ln -s ${build.conf}/${environment}.conf ${webserver.nginx.path}/sites-available/${deploy.site.name}.conf" />
+                            <exec command="sudo ln -s ${webserver.nginx.path}/sites-available/${deploy.site.name}.conf ${webserver.nginx.path}/sites-enabled/${deploy.site.name}.conf" />
+                            <exec command="sudo service nginx restart" />
+                        </then>
+                    </elseif>
+                </if>
+            </then>
+        </if>
+    </target>
+
+    <!-- TASK: php lint check -->
+    <target name="php-lint">
+        <phplint haltonfailure="true" level="warning">
+            <fileset dir="${build.site}">
+                <include name="**/*.php"/>
+            </fileset>
+        </phplint>
+    </target>
+
+    <!-- TASK: Create robots.txt file -->
+    <target name="robots" description="Apply robots.txt file to site">
+        <if>
+            <available file="${build.templates}/${environment}.robots.txt" />
+            <then>
+                <copy file="${build.templates}/${environment}.robots.txt" tofile="${project.basedir}/site/robots.txt" overwrite="true" />
+            </then>
+            <else>
+                <copy file="${build.templates}/robots.txt" tofile="${build.site}/robots.txt" overwrite="true" />
+            </else>
+        </if>
+    </target>
+
+</project>

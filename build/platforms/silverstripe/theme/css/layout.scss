@@ -1,0 +1,145 @@
+// Sizes
+$pageMaxWidth: 1200px;
+
+// Colours
+$white: #FFF;
+$black: #000;
+
+/*****************************
+ *            Setup
+ *****************************/
+
+@import "include/normalize";
+@import "include/mixins";
+@import "include/typography";
+@import "include/keyframes";
+
+*,
+*:before,
+*:after {
+  @include box-sizing(border-box);
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+fieldset {
+  border: none;
+}
+
+input {
+  margin: {
+    bottom: 10px;
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+i {
+  vertical-align: middle;
+}
+
+p {
+  margin: {
+    top: 0;
+    bottom: 1em;
+  }
+}
+
+.preload * {
+  @include transition(none !important);
+}
+
+.container {
+  width: 100%;
+  max: {
+    width: $pageMaxWidth;
+  }
+  margin: 0 auto;
+}
+
+.content-wrapper {
+  @include clearfix;
+}
+
+.align-right {
+  float: right;
+  right: 0;
+}
+
+.align-left {
+  float: left;
+  left: 0;
+}
+
+#navicon {
+  padding: 0px 10px;
+  float: right;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 30px;
+    height: 4px;
+    margin: 4px;
+    background: {
+      color: $black;
+    }
+  }
+}
+
+/*****************************
+ *        Main Styles
+ *****************************/
+
+
+
+/*****************************
+ *        Fixed Classes
+ *****************************/
+
+[class^="icon-"] {
+  display: inline-block;
+  background: {
+    repeat: no-repeat;
+  }
+}
+
+[class^="icon-social"] {
+  width: 24px;
+  height: 24px;
+}
+.icon-social-linkedin {
+  background: {
+    image: url(../img/social/linkedin.png);
+  }
+}
+.icon-social-facebook {
+  background: {
+    image: url(../img/social/facebook.png);
+  }
+}
+.icon-social-twitter {
+  background: {
+    image: url(../img/social/twitter.png);
+  }
+}
+.icon-social-email {
+  background: {
+    image: url(../img/social/email.png);
+  }
+}
+
+/*****************************
+ *           Media
+ *****************************/
+
+@import "media";

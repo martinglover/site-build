@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Automated Site Deploy"
+         description="Create new site in multiple platforms and webservers"
+         default="deploy-project"
+         basedir="./"
+         phingVersion="2.4.4">
+
+    <!-- Properties for build directories -->
+    <property name="build.dir" value="${project.basedir}/build" />
+    <property name="build.platforms" value="${build.dir}/platforms" />
+    <property name="build.templates" value="${build.dir}/templates" />
+    <property name="build.tasks" value="${build.dir}/targets" />
+    <property name="build.site" value="${project.basedir}/site" />
+    <property name="build.conf" value="${project.basedir}/conf" />
+
+    <!-- Properties default setup -->
+    <property name="platform" value="blank" />
+    <property name="webserver" value="apache" />
+
+    <!-- Properties imported for environment -->
+    <property file="${build.dir}/build.properties" />
+    <property name="environment" value="${deploy.env}" />
+
+    <tstamp />
+
+    <import file="${build.tasks}/global.xml" />
+    <import file="${build.tasks}/platform.xml" optional="true" />
+
+    <!-- Create a new project -->
+    <target name="create-project">
+        <!-- Move platform targets to correct directory -->
+        <move file="${build.platforms}/${platform}/platform.xml" tofile="${build.tasks}/platform.xml" />
+        <import file="${build.tasks}/platform.xml" />
+
+        <!-- Move platform templates -->
+        <copy todir="${build.templates}" overwrite="true">
+            <fileset dir="${build.platforms}/${platform}/templates">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <!-- Execute platform create -->
+        <phingcall target="create-platform" />
+
+        <!-- Delete setup files -->
+        <delete dir="${build.platforms}" />
+        <delete file="${project.basedir}/setup.sh" />
+
+        <!-- GIT initialisation -->
+        <exec command="git init" />
+        <exec command="git add -A" />
+        <exec command="git commit -m 'Initial Commit'" />
+
+    </target>
+
+    <!-- Deploy an existing project -->
+    <target name="deploy-project">
+        <!-- Execute robots.txt update -->
+        <phingcall target="robots" />
+
+        <!-- Execute site config update -->
+        <phingcall target="create-engine" />
+
+        <!-- Execute platform deploy -->
+        <phingcall target="deploy-platform" />
+
+        <!-- Execute php lint -->
+        <phingcall target="php-lint" />
+    </target>
+
+</project>

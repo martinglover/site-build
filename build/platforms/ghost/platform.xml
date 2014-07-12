@@ -1,0 +1,69 @@
+<project>
+    <!-- TASK: create new ghost platform -->
+    <target name="create-platform">
+        <!-- Execute ghost composer -->
+        <copy file="${build.platforms}/ghost/composer.json" tofile="${project.basedir}/composer.json" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <exec passthru="true" command="composer install" />
+
+        <exec passthru="true" command="npm install --${platform.ghost.env}" dir="${build.site}" />
+
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+
+        <!-- Create Database -->
+        <phingcall target="create-db" />
+
+        <!-- Execute ghost config -->
+        <phingcall target="ghost-config" />
+
+        <!-- Execute ghost autorun -->
+        <phingcall target="ghost-autorun" />
+
+        <!-- Move gitignore -->
+        <copy file="${build.platforms}/${platform}/gitignore" tofile="${build.site}/.gitignore" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: Deploy platform -->
+    <target name="deploy-platform">
+        <!-- Execute ghost composer -->
+        <exec command="composer update" />
+        <exec passthru="true" command="npm install --${platform.ghost.env}" dir="${build.site}" />
+
+        <!-- Execute ghost config -->
+        <phingcall target="ghost-config" />
+
+        <!-- Execute ghost autorun -->
+        <phingcall target="ghost-autorun" />
+    </target>
+
+    <!-- TASK: Generating template environment settings -->
+    <target name="ghost-config">
+        <copy file="${build.templates}/config.js" tofile="${build.site}/config.js" overwrite="false">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: Generating environment autorun -->
+    <target name="ghost-autorun">
+        <copy file="${build.templates}/autorun.sh" tofile="${build.conf}/autorun.sh" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <chmod file="${build.conf}/autorun.sh" mode="0755" />
+    </target>
+
+</project>

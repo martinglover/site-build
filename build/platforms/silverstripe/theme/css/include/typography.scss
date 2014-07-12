@@ -1,0 +1,22 @@
+html {
+  font: {
+    size: 62.5%;
+  }
+  line: {
+    height: 62.5%;
+  }
+}
+
+body {
+  @include fontSize(1.6);
+}
+
+a {
+  text: {
+    decoration: none;
+  }
+}
+
+.typography {
+
+}

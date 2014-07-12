@@ -1,0 +1,6 @@
+@import "mixins";
+@import "typography";
+
+body.mceContentBody{
+  @include fontSize(1.6);
+}

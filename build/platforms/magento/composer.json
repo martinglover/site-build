@@ -1,0 +1,28 @@
+{
+    "name": "Magento Setup",
+    "description": "Magento site setup",
+    "authors": [
+        {
+            "name": "Martin Glover",
+            "email": "dev@mjglover.co.uk"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "composer/installers": "~1.0",
+        "magento/core": "1.9.0.1"
+    },
+    "extra": {
+        "magento-root-dir":"site/",
+        "installer-paths": {
+
+        }
+    },
+    "minimum-stability": "dev"
+}

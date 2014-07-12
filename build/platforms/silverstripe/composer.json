@@ -1,0 +1,25 @@
+{
+    "name": "Silverstripe Setup"
+    ,"description": "SilverStripe site setup"
+    ,"authors": [
+        {
+            "name": "Martin Glover"
+            ,"email": "dev@mjglover.co.uk"
+        }
+    ]
+    ,"require": {
+        "php": ">=5.3.2"
+        ,"composer/installers": "~1.0"
+        ,"silverstripe/cms": "${platform.silverstripe.version}"
+        ,"silverstripe/framework": "${platform.silverstripe.version}"
+        ,"bummzack/sortablefile": "*"
+        ,"undefinedoffset/sortablegridfield": "*"
+        ,"heyday/silverstripe-menumanager": "*"
+        ,"unclecheese/betterbuttons": "*"
+        ,"zucchi/metatags": "*"
+    }
+    ,"config": {
+        "process-timeout": 600
+    }
+    ,"minimum-stability": "dev"
+}

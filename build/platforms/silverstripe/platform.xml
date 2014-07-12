@@ -1,0 +1,76 @@
+<project>
+    <!-- TASK: create new silverstripe platform -->
+    <target name="create-platform">
+        <!-- Execute composer -->
+        <exec passthru="true" command="composer create-project silverstripe/installer ${build.site} ${platform.silverstripe.version}" />
+        <copy file="${build.platforms}/silverstripe/composer.json" tofile="${build.site}/composer.json" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <exec passthru="true" command="composer update -d ${build.site}" />
+
+        <!-- Move Silverstripe theme -->
+        <copy todir="${build.site}/themes/${sitename}" overwrite="true">
+            <fileset dir="${build.platforms}/silverstripe/theme" >
+                <include name="**/*" />
+            </fileset>
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+
+        <!-- Move Silverstripe mysite -->
+        <copy todir="${build.site}/mysite" overwrite="true">
+            <fileset dir="${build.platforms}/silverstripe/mysite" >
+                <include name="**/*" />
+            </fileset>
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+        <!-- Execute Silverstripe config -->
+        <phingcall target="ss-config" />
+        <!-- Execute Silverstripe site build -->
+        <phingcall target="ss-db-build" />
+        <!-- Remove Silverstripe install files -->
+        <delete file="${build.site}/install.php"/>
+
+        <!-- Move site gitignore -->
+        <copy file="${build.platforms}/${platform}/gitignore" tofile="${build.site}/.gitignore" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: deploy existing silverstripe platform -->
+    <target name="deploy-platform">
+        <!-- Execute Silverstripe composer -->
+        <exec command="composer update -d ${build.site}" />
+        <!-- Execute Silverstripe config -->
+        <phingcall target="ss-config" />
+        <!-- Execute Silverstripe dev build -->
+        <phingcall target="ss-db-build" />
+    </target>
+
+    <!-- TASK: Generating template environment settings -->
+    <target name="ss-config">
+        <copy file="${build.templates}/_ss_environment.php" tofile="${build.site}/_ss_environment.php" overwrite="false">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: Performing database build -->
+    <target name="ss-db-build">
+        <exec command='php -f ${build.site}/framework/cli-script.php dev/build "flush=1"' />
+    </target>
+
+</project>

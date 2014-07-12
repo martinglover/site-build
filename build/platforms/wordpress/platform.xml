@@ -1,0 +1,65 @@
+<project>
+    <!-- TASK: create new wordpress platform -->
+    <target name="create-platform">
+        <!-- Execute wordpress composer -->
+        <copy file="${build.platforms}/wordpress/composer.json" tofile="${project.basedir}/composer.json" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <exec passthru="true" command="composer install" />
+
+        <!-- Move wordpress theme -->
+        <copy todir="${build.site}/wp-content/themes/${deploy.site.name}" overwrite="true">
+            <fileset dir="${build.platforms}/wordpress/theme">
+                <include name="**/*" />
+            </fileset>
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+        <!-- Create Database -->
+        <phingcall target="create-db" />
+        <!-- Execute WP config -->
+        <phingcall target="wp-config" />
+
+        <!-- Execute WP database site setup -->
+        <http-request url="http://${deploy.site.url}/wp-admin/install.php?step=2" method="POST" >
+            <postparameter name="weblog_title" value="${deploy.site.name}" />
+            <postparameter name="user_name" value="${deploy.cms.username}" />
+            <postparameter name="admin_password" value="${deploy.cms.password}" />
+            <postparameter name="admin_password2" value="${deploy.cms.password}" />
+            <postparameter name="admin_email" value="${deploy.site.email}" />
+            <postparameter name="Submit" value="Install Wordpress" />
+        </http-request>
+
+        <!-- Move site gitignore -->
+        <copy file="${build.platforms}/${platform}/gitignore" tofile="${build.site}/.gitignore" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: deploy existing wordpress platform -->
+    <target name="deploy-platform">
+        <!-- Execute wordpress composer -->
+        <exec command="composer update" />
+        <!-- Execute WP config -->
+        <phingcall target="wp-config" />
+    </target>
+
+    <target name="wp-config">
+        <copy file="${build.templates}/wp-config.php" tofile="${build.site}/wp-config.php" overwrite="false">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+</project>

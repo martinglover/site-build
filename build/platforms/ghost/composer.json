@@ -1,0 +1,37 @@
+{
+    "name": "Ghost Setup",
+    "description": "Ghost site setup",
+    "authors": [
+        {
+            "name": "Martin Glover",
+            "email": "dev@mjglover.co.uk"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "tryghost/ghost",
+                "type": "webroot",
+                "version": "0.4",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://ghost.org/zip/ghost-latest.zip"
+                },
+                "require" : {
+                    "fancyguy/webroot-installer": "1.0.0"
+                }
+            }
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "fancyguy/webroot-installer": "1.0.0",
+        "tryghost/ghost": "0.4"
+    },
+    "extra": {
+        "webroot-dir": "site",
+        "webroot-package": "tryghost/ghost"
+    },
+    "minimum-stability": "dev"
+}

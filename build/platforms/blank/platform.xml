@@ -1,0 +1,18 @@
+<project>
+    <!-- TASK: create new platform -->
+    <target name="create-platform">
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+        <!-- Create Database -->
+        <phingcall target="create-db" />
+    </target>
+
+    <!-- TASK: Deploy platform -->
+    <target name="deploy-platform">
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+    </target>
+
+</project>
