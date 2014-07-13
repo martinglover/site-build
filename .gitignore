@@ -8,6 +8,8 @@
 ## IDE files
 .idea/
 .project/
+.settings
+.buildpath
 /*.sublime-project
 *.sublime-workspace
 

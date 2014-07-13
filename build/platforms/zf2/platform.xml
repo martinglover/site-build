@@ -1,0 +1,39 @@
+<project>
+    <!-- TASK: create new zf2 platform -->
+    <target name="create-platform">
+        <!-- Execute composer -->
+        <exec passthru="true" command="composer create-project -sdev --repository-url='https://packages.zendframework.com' zendframework/skeleton-application ${build.site}" />
+
+        <copy file="${build.platforms}/zf2/composer.json" tofile="${build.site}/composer.json" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <exec passthru="true" command="composer update -d ${build.site}" />
+
+        <delete file="${build.site}/composer.phar" />
+        <delete file="${build.site}/README.md" />
+        <delete file="${build.site}/LICENSE.txt" />
+        <delete file="${build.site}/.gitmodules" />
+
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+
+        <!-- Move site gitignore -->
+        <copy file="${build.platforms}/${platform}/gitignore" tofile="${build.site}/.gitignore" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+    <!-- TASK: deploy existing zf2 platform -->
+    <target name="deploy-platform">
+        <exec command="composer update -d ${build.site}" />
+
+    </target>
+
+
+</project>
