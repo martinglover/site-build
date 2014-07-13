@@ -49,6 +49,7 @@ This defines the plaform to be built, current options are:
 * blank
 * ghost
 * magento
+* octo
 * silverstripe
 * wordpress
 

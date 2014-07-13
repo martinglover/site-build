@@ -1,0 +1,77 @@
+<project>
+    <!-- TASK: create new Octo platform -->
+    <target name="create-platform">
+        <!-- Execute Octo composer -->
+        <copy file="${build.platforms}/octo/composer.json" tofile="${project.basedir}/composer.json" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <exec passthru="true" command="composer install" />
+        <exec passthru="true" command="composer install -d ${build.site}" />
+
+        <!-- Move Octo theme -->
+        <copy todir="${build.site}/${platform.octo.namespace}" overwrite="true">
+            <fileset dir="${build.platforms}/octo/Octo">
+                <include name="**/*" />
+            </fileset>
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+
+        <!-- Move Octo assets -->
+        <copy todir="${build.site}/public/assets" overwrite="true">
+            <fileset dir="${build.platforms}/octo/assets">
+                <include name="**/*" />
+            </fileset>
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+
+        <!-- Execute Octo config -->
+        <phingcall target="octo-config" />
+
+        <!-- Create server engine conf -->
+        <phingcall target="create-engine" />
+
+        <!-- Add site to server engine available sites -->
+        <phingcall target="site-attach" />
+
+        <!-- Create Database -->
+        <phingcall target="create-db" />
+
+        <!-- Migrate new databse setup -->
+        <exec passthru="true" command="./vendor/bin/octocmd db:migration" dir="${build.site}"/>
+
+        <!-- Move site gitignore -->
+        <copy file="${build.platforms}/${platform}/gitignore" tofile="${build.site}/.gitignore" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+
+    </target>
+
+    <!-- TASK: deploy existing Octo platformm -->
+    <target name="deploy-platform">
+        <!-- Execute Octo composer -->
+        <exec passthru="true" command="composer update" />
+        <exec passthru="true" command="composer install -d ${build.site}" />
+
+        <!-- Execute Octo config -->
+        <phingcall target="octo-config" />
+
+    </target>
+
+    <!-- octo Setup -->
+    <target name="octo-config">
+        <copy file="${build.templates}/siteconfig.php" tofile="${build.site}/siteconfig.php" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+</project>

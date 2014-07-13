@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{@version.title}</title>
+    <meta name="description" content="{@version.meta_description}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body class="preload">
+
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="nav-main">
+                    {block type: "Menu"; id: "primary"}
+                </div>
+            </div>
+        </nav>
+
+        {if page.Parent.parent_id}
+            <h1>{@page.Parent.CurrentVersion.title}</h1>
+        {/if}
+
+        {ifnot page.Parent.parent_id}
+            {if page.parent_id}
+                <h1>{@version.title}</h1>
+            {/if}
+        {/ifnot}
+    </header>
