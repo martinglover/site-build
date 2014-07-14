@@ -3,8 +3,8 @@
     "description": "Magento site setup",
     "authors": [
         {
-            "name": "Martin Glover",
-            "email": "dev@mjglover.co.uk"
+            "name": "${deploy.author.name}"
+            ,"email": "${deploy.author.email}"
         }
     ],
     "repositories": [
@@ -16,10 +16,10 @@
     "require": {
         "php": ">=5.3.3",
         "composer/installers": "~1.0",
-        "magento/core": "1.9.0.1"
+        "magento/core": "${platform.magento.version}"
     },
     "extra": {
-        "magento-root-dir":"site/",
+        "magento-root-dir":"public",
         "installer-paths": {
 
         }

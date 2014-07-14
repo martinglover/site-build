@@ -20,10 +20,29 @@ deploy.db.host=localhost
 
 platform.silverstripe.version=3.1.5
 
-platform.wordpress.version=3.9
+platform.wordpress.version=3.9.1
 platform.wordpress.language=en_UK
 
 platform.ghost.env=production
+
+platform.magento.version=1.9.0.1
+platform.magento.sampledataversion=1.9.0.0
+platform.magento.is_developer_mode=true
+platform.magento.display_errors=1
+platform.magento.locale=en_GB
+platform.magento.timezone=Europe/London
+platform.magento.currency=GBP
+platform.magento.session.save=db
+platform.magento.rewrites=yes
+platform.magento.secure=no
+platform.magento.charts=no
+platform.magento.skip_url_validation=no
+platform.magento.admin.secure=no
+platform.magento.admin_frontend=admin
+platform.magento.admin.forename=Forename
+platform.magento.admin.surname=Surname
+platform.magento.admin.username=admin
+platform.magento.admin.password=password1
 
 platform.zf2.version=2.3.1
 
