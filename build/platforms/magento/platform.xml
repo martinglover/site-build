@@ -1,13 +1,17 @@
 <project>
     <!-- TASK: create new Magento platform -->
     <target name="create-platform">
+
+        <mkdir dir="${build.site}" />
+        <mkdir dir="${build.site}/public" />
+
         <!-- Execute Magento composer -->
-        <copy file="${build.platforms}/magento/composer.json" tofile="${project.basedir}/composer.json" overwrite="true">
+        <copy file="${build.platforms}/magento/composer.json" tofile="${build.site}/composer.json" overwrite="true">
             <filterchain>
                 <expandproperties />
             </filterchain>
         </copy>
-        <exec passthru="true" command="composer install" />
+        <exec passthru="true" command="composer install -d ${build.site}" />
 
         <!-- Create server engine conf -->
         <phingcall target="create-engine" />
@@ -24,7 +28,69 @@
                 <expandproperties />
             </filterchain>
         </copy>
+
+        <!-- Install Magento -->
+        <phingcall target="magento-install" />
+
     </target>
+
+     <target name="magento-install" hidden="true">
+
+         <!-- test for and install sample data -->
+         <!--
+         <input propertyname="platform.magento.installsampledata" promptChar="?" validargs="Y,y,N,n">
+             Do you want to install the Magento Sample Data
+         </input>
+
+         <if>
+             <or>
+                 <equals arg1="${platform.magento.installsampledata}" arg2="Y" />
+                 <equals arg1="${platform.magento.installsampledata}" arg2="y" />
+             </or>
+             <then>
+                 <httpget url="http://www.magentocommerce.com/downloads/assets/${platform.magento.sampledataversion}/magento-sample-data-${platform.magento.sampledataversion}.tar.gz" dir="assets/db" />
+                 <untar file="assets/db/magento-sample-data-${platform.magento.sampledataversion}.tar.gz" todir="assets/db" />
+                 <exec passthru="true" checkreturn="true" dir="assets/db" command="mysql -h ${deploy.db.host} -u ${deploy.db.username} -p${deploy.db.password} ${deploy.db.name} &lt; data.sql" />
+             </then>
+         </if>
+         -->
+
+        <!-- perform CLI setup of site -->
+        <exec passthru="true" checkreturn="true" dir="${build.site}/public" command="php -f install.php --
+            --license_agreement_accepted 'yes'
+            --locale  '${platform.magento.locale}'
+            --timezone '${platform.magento.timezone}'
+            --default_currency '${platform.magento.currency}'
+            --db_host '${deploy.db.host}'
+            --db_name '${deploy.db.name}'
+            --db_user '${deploy.db.username}'
+            --db_pass '${deploy.db.password}'
+            --session_save '${platform.magento.session.save}'
+            --admin_frontname '${platform.magento.admin.frontend}'
+            --skip_url_validation ${platform.magento.skip_url_validation}
+            --url 'http://${deploy.site.url}'
+            --use_rewrites ${platform.magento.rewrites}
+            --use_secure ${platform.magento.secure}
+            --secure_base_url 'https://${deploy.site.url}'
+            --use_secure_admin '${platform.magento.admin.secure}'
+            --enable_charts ${platform.magento.charts}
+            --admin_firstname '${platform.magento.admin.forename}'
+            --admin_lastname '${platform.magento.admin.surname}'
+            --admin_email '${deploy.site.email}'
+            --admin_username '${platform.magento.admin.username}'
+            --admin_password '${platform.magento.admin.password}'" />
+
+         <!-- clean up misc files -->
+         <delete>
+             <fileset dir="${build.site}/public">
+                 <include name="*.txt" />
+                 <include name="*.html" />
+                 <include name="*.sample" />
+             </fileset>
+         </delete>
+
+    </target>
+
 
     <!-- TASK: deploy existing Magento platformm -->
     <target name="deploy-platform">
