@@ -1,0 +1,57 @@
+{include template: "include/header"; variables: page,version}
+
+<div class="light strip">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 intro">
+                {block type: "Text"; name: "Intro"; id: "intro"}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container body-content">
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            <h2>What do we offer?</h2>
+        </div>
+
+        <div class="col-lg-8 col-md-8">
+            {block type: "Text"; name: "What do we offer"; id: "what"}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            <h2>Why work with us?</h2>
+        </div>
+
+        <div class="col-lg-8 col-md-8">
+            {block type: "Text"; name: "Why work with us"; id: "why"}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            <h2>What can we build?</h2>
+        </div>
+
+        <div class="col-lg-8 col-md-8">
+            {block type: "Text"; name: "What can we build"; id: "build"}
+        </div>
+    </div>
+</div>
+
+<div class="light strip">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 cta">
+                <p>Think we could help you? Get in touch and we'll get started right away.</p>
+                <a class="btn btn-lg btn-success" href="/contact-us">Contact Us &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{include template: "include/footer"; variables: page,version}

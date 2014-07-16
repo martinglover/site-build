@@ -33,10 +33,10 @@ fi
 sitename=${@: -1}
 platform="blank"
 webserver="apache"
-validPlatforms="blank|ghost|magento|silverstripe|wordpress|zf2"
+validPlatforms="blank|ghost|magento|octo|silverstripe|wordpress|zf2"
 validWebservers="apache|nginx"
 
-while getopts p:,s:,d optname; do
+while getopts p:s:d optname; do
     case "$optname" in
         p)
             platform=$OPTARG
@@ -102,13 +102,13 @@ mkdir ../$sitename
 
 # Creating new site directory and files
 if [ $debug = true ]; then
+    rsync -a --exclude build.properties.tmp --exclude .git --exclude .idea --exclude .project --exclude .sublime-project ./ ../$sitename
+    cd ../$sitename
+else
     git archive --format tar --output ../$sitename/setup.tar master
     cd ../$sitename
     tar -xf setup.tar
     rm setup.tar
-else
-    rsync -a --exclude build.properties.tmp --exclude .git --exclude .idea --exclude .project --exclude .sublime-project ./ ../$sitename
-    cd ../$sitename
 fi
 # Phing build
 phing -f build.xml create-project -Dsitename=$sitename -Dplatform=$platform -Dwebserver=$webserver
