@@ -47,4 +47,5 @@ platform.magento.admin.password=password1
 platform.zf2.version=2.3.1
 
 webserver.apache.path=/etc/apache2
+
 webserver.nginx.path=/etc/nginx
