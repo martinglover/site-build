@@ -52,6 +52,7 @@ This defines the plaform to be built, current options are:
 * octo
 * silverstripe
 * wordpress
+* zf2
 
 #### -s (webserver) ####
 

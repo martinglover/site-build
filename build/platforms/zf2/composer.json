@@ -1,0 +1,24 @@
+{
+    "name": "Zend Framework 2 Setup"
+    ,"description": "Zend Framework 2 Setup"
+    ,"authors": [
+        {
+            "name": "${deploy.author.name}"
+            ,"email": "${deploy.author.email}"
+        }
+    ]
+    ,"repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.zendframework.com/"
+        }
+    ]
+    ,"require": {
+        "php": ">=5.3.3"
+        ,"zendframework/zendframework": "${platform.zf2.version}"
+        ,"doctrine/annotations": "*"
+    }
+    ,"config": {
+        "process-timeout": 1500
+    }
+}

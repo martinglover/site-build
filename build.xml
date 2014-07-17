@@ -44,7 +44,12 @@
 
         <!-- Delete setup files -->
         <delete dir="${build.platforms}" />
-        <delete file="${project.basedir}/setup.sh" />
+        <delete>
+            <fileset dir="${project.basedir}">
+                <include name="*.sh" />
+                <include name="*.md" />
+            </fileset>
+        </delete>
 
         <!-- GIT initialisation -->
         <exec command="git init" />

@@ -1,0 +1,10 @@
+/*
+!.gitignore
+!mysite/
+!themes/
+!composer.json
+!.htaccess
+!favicon.ico
+
+themes/*
+!themes/${sitename}
