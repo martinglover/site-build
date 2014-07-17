@@ -12,11 +12,15 @@
         ,"composer/installers": "~1.0"
         ,"silverstripe/cms": "${platform.silverstripe.version}"
         ,"silverstripe/framework": "${platform.silverstripe.version}"
+        ,"silverstripe/googlesitemaps": "*"
         ,"bummzack/sortablefile": "*"
         ,"undefinedoffset/sortablegridfield": "*"
         ,"heyday/silverstripe-menumanager": "*"
         ,"unclecheese/betterbuttons": "*"
         ,"zucchi/metatags": "*"
+        ,"zucchi/geotags": "*"
+        ,"zucchi/editor-extensions": "*"
+
     }
     ,"config": {
         "process-timeout": 600
