@@ -25,8 +25,6 @@ platform.wordpress.language=en_UK
 
 platform.ghost.env=production
 
-<<<<<<< HEAD
-=======
 platform.magento.version=1.9.0.1
 platform.magento.sampledataversion=1.9.0.0
 platform.magento.is_developer_mode=true
@@ -48,7 +46,5 @@ platform.magento.admin.password=password1
 
 platform.zf2.version=2.3.1
 
->>>>>>> 7c5481f... updating magento platform
 webserver.apache.path=/etc/apache2
-
 webserver.nginx.path=/etc/nginx
