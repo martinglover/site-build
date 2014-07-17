@@ -28,7 +28,7 @@ fi
 sitename=${@: -1}
 platform="blank"
 webserver="apache"
-validPlatforms="blank|ghost|magento|octo|silverstripe|wordpress"
+validPlatforms="blank|ghost|magento|octo|silverstripe|wordpress|zf2"
 validWebservers="apache|nginx"
 
 while getopts p:s:d optname; do
