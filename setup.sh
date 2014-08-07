@@ -15,11 +15,6 @@ script=$(readlink -f $0)
 setupDir=`dirname $script`
 debug=false
 
-if [ ! -f build/build.properties ]; then
-    echo -e "${txtR}You must create a valid build.properties file${txtRst}\n"
-    exit 1
-fi
-
 if [ "$#" -eq 0 ]
 then
     echo -e "${txtR}You must provide a name for a new project${txtRst}\n"
