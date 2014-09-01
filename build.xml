@@ -48,6 +48,7 @@
             <fileset dir="${project.basedir}">
                 <include name="*.sh" />
                 <include name="*.md" />
+                <include name="*.png" />
             </fileset>
         </delete>
 

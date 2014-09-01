@@ -10,6 +10,7 @@ txtC=$(tput setaf 6)
 txtW=$(tput setaf 7)
 txtRst=$(tput sgr0)
 
+buildDir=`pwd`
 script=$(readlink -f $0)
 setupDir=`dirname $script`
 debug=false
@@ -104,6 +105,8 @@ else
     cd ../$sitename
     tar -xf setup.tar
     rm setup.tar
+    cp $buildDir/build/build.properties build/
+
 fi
 # Phing build
 phing -f build.xml create-project -Dsitename=$sitename -Dplatform=$platform -Dwebserver=$webserver
